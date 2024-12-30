@@ -1,7 +1,9 @@
 package com.example.lms.controllers;
 
 import com.example.lms.entities.Borrower;
+import com.example.lms.payload.response.PaginatedResponse;
 import com.example.lms.services.BorrowerService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -33,9 +36,18 @@ public class BorrowerController {
 
     // Get a list of borrowers
     @GetMapping
-    public ResponseEntity<List<Borrower>> getAllBorrowers() {
-        List<Borrower> borrowerList = borrowerService.getAllBorrowers();
-        return ResponseEntity.ok(borrowerList);
+    public ResponseEntity<PaginatedResponse<Borrower>> getAllBorrowers(
+            @RequestParam(defaultValue = "0") int pageNo,
+            @RequestParam(defaultValue = "5") int pageSize
+    ) {
+        Page<Borrower> borrowerPage = borrowerService.getAllBorrowers(pageNo, pageSize);
+        PaginatedResponse<Borrower> response = new PaginatedResponse<>(
+                borrowerPage.getContent(),
+                borrowerPage.getNumber(),
+                borrowerPage.getSize(),
+                borrowerPage.getTotalElements()
+        );
+        return ResponseEntity.ok(response);
     }
 
     // Get details of a specific borrower

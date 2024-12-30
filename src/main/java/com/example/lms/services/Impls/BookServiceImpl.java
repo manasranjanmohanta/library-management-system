@@ -8,6 +8,9 @@ import com.example.lms.repositories.AuthorRepository;
 import com.example.lms.repositories.BookRepository;
 import com.example.lms.repositories.BorrowerRepository;
 import com.example.lms.services.BookService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -26,8 +29,9 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<Book> getAllBooks() {
-        return bookRepository.findAll();
+    public Page<Book> getAllBooks(int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        return bookRepository.findAll(pageable);
     }
 
     @Override

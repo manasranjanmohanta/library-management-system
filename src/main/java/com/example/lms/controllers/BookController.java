@@ -1,7 +1,9 @@
 package com.example.lms.controllers;
 
 import com.example.lms.entities.Book;
+import com.example.lms.payload.response.PaginatedResponse;
 import com.example.lms.services.BookService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,9 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/books")
@@ -33,9 +34,17 @@ public class BookController {
 
     // Get a list of Books
     @GetMapping
-    public ResponseEntity<List<Book>> getAllBooks() {
-        List<Book> BookList = bookService.getAllBooks();
-        return ResponseEntity.ok(BookList);
+    public ResponseEntity<PaginatedResponse<Book>> getAllBooks(
+            @RequestParam(defaultValue = "0") int pageNo,
+            @RequestParam(defaultValue = "10") int pageSize) {
+        Page<Book> bookPage = bookService.getAllBooks(pageNo, pageSize);
+        PaginatedResponse<Book> response = new PaginatedResponse<>(
+                bookPage.getContent(),
+                bookPage.getNumber(),
+                bookPage.getSize(),
+                bookPage.getTotalElements()
+        );
+        return ResponseEntity.ok(response);
     }
 
     // Get details of a specific Book

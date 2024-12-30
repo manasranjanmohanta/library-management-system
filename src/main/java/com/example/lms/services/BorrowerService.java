@@ -1,13 +1,14 @@
 package com.example.lms.services;
 
 import com.example.lms.entities.Borrower;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 public interface BorrowerService {
     Borrower addBorrower(Borrower borrower);
 
-    List<Borrower> getAllBorrowers();
+    Page<Borrower> getAllBorrowers(int pageNo, int pageSize);
 
     Borrower getSingleBorrower(long id);
 

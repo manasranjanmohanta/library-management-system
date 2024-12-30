@@ -4,6 +4,9 @@ import com.example.lms.entities.Borrower;
 import com.example.lms.exceptions.ResourceNotFoundException;
 import com.example.lms.repositories.BorrowerRepository;
 import com.example.lms.services.BorrowerService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,9 +26,9 @@ public class BorrowerServiceImpl implements BorrowerService {
     }
 
     @Override
-    public List<Borrower> getAllBorrowers() {
-        List<Borrower> borrowerList = borrowerRepository.findAll();
-        return borrowerList;
+    public Page<Borrower> getAllBorrowers(int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        return borrowerRepository.findAll(pageable);
     }
 
     @Override

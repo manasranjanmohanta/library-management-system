@@ -4,6 +4,9 @@ import com.example.lms.entities.Author;
 import com.example.lms.exceptions.ResourceNotFoundException;
 import com.example.lms.repositories.AuthorRepository;
 import com.example.lms.services.AuthorService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,9 +27,9 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public List<Author> getAllAuthors() {
-        List<Author> allAuthors = authorRepository.findAll();
-        return allAuthors;
+    public Page<Author> getAllAuthors(int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        return authorRepository.findAll(pageable);
     }
 
     @Override

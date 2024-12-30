@@ -1,13 +1,14 @@
 package com.example.lms.services;
 
 import com.example.lms.entities.Author;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 public interface AuthorService {
     Author addAuthor(Author author);
 
-    List<Author> getAllAuthors();
+    Page<Author> getAllAuthors(int pageNo, int pageSize);
 
     Author getSingleAuthor(long id);
 

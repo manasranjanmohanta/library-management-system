@@ -1,11 +1,12 @@
 package com.example.lms.services;
 
 import com.example.lms.entities.Book;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 public interface BookService {
-    List<Book> getAllBooks();
+    Page<Book> getAllBooks(int pageNo, int pageSize);
 
     Book getSingleBook(long id);
 
